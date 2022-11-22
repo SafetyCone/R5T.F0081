@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <NoWarn>1591</NoWarn>
+    <NoWarn>1573,1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
     <Version>1.0.0</Version>
@@ -16,5 +16,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\R5T.F0020\source\R5T.F0020\R5T.F0020.csproj" />
+    <ProjectReference Include="..\..\..\R5T.Z0018.Private\source\R5T.Z0018\R5T.Z0018.csproj" />
+    <ProjectReference Include="..\..\..\R5T.Z0020\source\R5T.Z0020\R5T.Z0020.csproj" />
   </ItemGroup>
 </Project>
