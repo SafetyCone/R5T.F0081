@@ -39,11 +39,11 @@ namespace R5T.F0081
         /// <summary>
 		/// Creates the standard Blazor server web project file.
 		/// </summary>
-		public async Task CreateNewProjectFile_WebServerForBlazorClient(string projectFilePath)
+		public async Task CreateNewProjectFile_WebBlazorClient(string projectFilePath)
         {
             await ProjectFileOperator.Instance.CreateNewProjectFile(
                 projectFilePath,
-                ProjectXmlOperations.Instance.GetSetupProjectElement_WebServerForBlazorClient(
+                ProjectXmlOperations.Instance.GetSetupProjectElement_WebBlazorClient(
                     projectFilePath));
         }
 

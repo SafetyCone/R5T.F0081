@@ -88,12 +88,12 @@ namespace R5T.F0081
 			return Internal;
 		}
 
-        public Func<XElement, Task> GetSetupProjectElement_WebServerForBlazorClient(
+        public Func<XElement, Task> GetSetupProjectElement_WebBlazorClient(
             string expectedProjectFilePath)
         {
             Task Internal(XElement projectXElement)
             {
-                this.SetupProjectElement_WebServerForBlazorClient(
+                this.SetupProjectElement_WebBlazorClient(
                     projectXElement,
                     expectedProjectFilePath);
 
@@ -141,13 +141,13 @@ namespace R5T.F0081
 			// Not setting any project reference depdencies, yet. So keep expected project file path input.
 		}
 
-        public void SetupProjectElement_WebServerForBlazorClient(
+        public void SetupProjectElement_WebBlazorClient(
            XElement projectElement,
            string expectedProjectFilePath)
         {
             this.SetBlazorWebAssemblySdk(projectElement);
             this.SetWebTargetFramework(projectElement);
-            this.AddWebBlazorServerPackageReferences(projectElement);
+            this.AddWebBlazorClientPackageReferences(projectElement);
 
             // Not setting any project reference depdencies, yet. So keep expected project file path input.
         }
@@ -160,7 +160,15 @@ namespace R5T.F0081
                 Z0020.Packages.Instance.ForWebBlazorServer.ToStringBasedPackageReferences());
         }
 
-		public void SetupProjectElement_Web(
+        public void AddWebBlazorClientPackageReferences(
+            XElement projectElement)
+        {
+            ProjectXmlOperator.Instance.AddPackageReferences_Idempotent(
+                projectElement,
+                Z0020.Packages.Instance.ForWebBlazorClient.ToStringBasedPackageReferences());
+        }
+
+        public void SetupProjectElement_Web(
            XElement projectElement,
            string expectedProjectFilePath)
         {
