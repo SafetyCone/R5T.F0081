@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 using R5T.F0020;
 using R5T.T0132;
-
+using R5T.Z0020;
 
 namespace R5T.F0081
 {
@@ -14,6 +14,61 @@ namespace R5T.F0081
 	[FunctionalityMarker]
 	public partial interface IProjectFileOperations : IFunctionalityMarker
 	{
+        /// <summary>
+        /// Determine if a project is a Razor class library.
+        /// </summary>
+        public async Task<bool> Is_RazorComponentsLibrary(string projectFilePath)
+        {
+            var isRazorClassLibrary = await ProjectFileOperator.Instance.InQueryProjectFileContext(
+                projectFilePath,
+                projectElement =>
+                {
+                    // Test that the project file has Sdk="Microsoft.NET.Sdk.Razor".
+                    var hasSdk = ProjectXmlOperator.Instance.HasSdk(projectElement);
+                    if(!hasSdk)
+                    {
+                        return false;
+                    }
+
+                    var sdk = hasSdk.Result;
+
+                    var isRazorSdk = ProjectSdkStringOperations.Instance.Is_RazorSdk(sdk);
+                    if(!isRazorSdk)
+                    {
+                        return false;
+                    }
+
+                    // Test that the SupportedPlatform of "browser".
+                    var hasSupportedPlatformElement = ProjectXmlOperator.Instance.HasSupportedPlatformElement(projectElement);
+                    if(!hasSupportedPlatformElement)
+                    {
+                        return false;
+                    }
+
+                    var supportedPlatformElement = hasSupportedPlatformElement.Result;
+
+                    var isForBrowser = SupportedPlatformsOperations.Instance.Is_ForBrowser(supportedPlatformElement);
+                    if (!isForBrowser)
+                    {
+                        return false;
+                    }
+
+                    // Test that the project has a package reference to "Microsoft.AspNetCore.Components.Web".
+                    var hasPackageReference = ProjectXmlOperator.Instance.HasPackageReferenceElement(projectElement,
+                        PackageIdentities.Instance.Microsoft_AspNetCore_Components_Web);
+
+                    if(!hasPackageReference)
+                    {
+                        return false;
+                    }
+
+                    // Finally, success.
+                    return true;
+                });
+
+            return isRazorClassLibrary;
+        }
+
         /// <summary>
         /// Creates the standard web project file.
         /// </summary>
@@ -35,6 +90,14 @@ namespace R5T.F0081
 				ProjectXmlOperations.Instance.GetSetupProjectElement_WebServerForBlazorClient(
 					projectFilePath));
 		}
+
+        public async Task CreateNewProjectFile_WebStaticRazorComponents(string projectFilePath)
+        {
+            await ProjectFileOperator.Instance.CreateNewProjectFile(
+                projectFilePath,
+                ProjectXmlOperations.Instance.GetSetupProjectElement_WebStaticRazorComponents(
+                    projectFilePath));
+        }
 
         /// <summary>
 		/// Creates the standard Blazor server web project file.
@@ -66,6 +129,14 @@ namespace R5T.F0081
             await ProjectFileOperator.Instance.CreateNewProjectFile(
                 projectFilePath,
                 ProjectXmlOperations.Instance.GetSetupProjectElement_Console(
+                    projectFilePath));
+        }
+
+        public async Task CreateNewProjectFile_RazorClassLibrary(string projectFilePath)
+        {
+            await ProjectFileOperator.Instance.CreateNewProjectFile(
+                projectFilePath,
+                ProjectXmlOperations.Instance.GetSetupProjectElement_RazorClassLibrary(
                     projectFilePath));
         }
 

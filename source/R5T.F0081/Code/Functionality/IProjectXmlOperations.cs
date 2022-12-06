@@ -58,6 +58,21 @@ namespace R5T.F0081
             return Internal;
         }
 
+        public Func<XElement, Task> GetSetupProjectElement_RazorClassLibrary(
+            string expectedProjectFilePath)
+        {
+            Task Internal(XElement projectXElement)
+            {
+                this.SetupProjectElement_RazorClassLibrary(
+                    projectXElement,
+                    expectedProjectFilePath);
+
+                return Task.CompletedTask;
+            }
+
+            return Internal;
+        }
+
         public Func<XElement, Task> GetSetupProjectElement_Web(
             string expectedProjectFilePath)
         {
@@ -88,6 +103,21 @@ namespace R5T.F0081
 			return Internal;
 		}
 
+        public Func<XElement, Task> GetSetupProjectElement_WebStaticRazorComponents(
+            string expectedProjectFilePath)
+        {
+            Task Internal(XElement projectXElement)
+            {
+                this.SetupProjectElement_WebStaticRazorComponents(
+                    projectXElement,
+                    expectedProjectFilePath);
+
+                return Task.CompletedTask;
+            }
+
+            return Internal;
+        }
+
         public Func<XElement, Task> GetSetupProjectElement_WebBlazorClient(
             string expectedProjectFilePath)
         {
@@ -103,6 +133,16 @@ namespace R5T.F0081
             return Internal;
         }
 
+        public void SetupProjectElement_Initial(
+            XElement projectElement,
+            string expectedProjectFilePath)
+        {
+            ProjectXmlOperator.Instance.SetGenerateDocumentationFile(projectElement, true);
+            this.SetDisabledWarnings(projectElement);
+
+            // Not setting any project reference depdencies, yet. So keep expected project file path input.
+        }
+
         /// <summary>
         /// The main setup method for library project elements.
         /// Other setup methods that do not.
@@ -111,6 +151,10 @@ namespace R5T.F0081
             XElement projectElement,
             string expectedProjectFilePath)
         {
+            this.SetupProjectElement_Initial(
+                projectElement,
+                expectedProjectFilePath);
+
             this.SetNetSdk(projectElement);
             this.SetLibraryTargetFramework(projectElement);
             this.AddLibraryProjectReferences(
@@ -122,6 +166,10 @@ namespace R5T.F0081
             XElement projectElement,
             string expectedProjectFilePath)
         {
+            this.SetupProjectElement_Initial(
+                projectElement,
+                expectedProjectFilePath);
+
             this.SetNetSdk(projectElement);
             this.SetConsoleTargetFramework(projectElement);
             this.SetConsoleOutputType(projectElement);
@@ -130,21 +178,59 @@ namespace R5T.F0081
                 expectedProjectFilePath);
         }
 
-		public void SetupProjectElement_WebServerForBlazorClient(
+        public void SetupProjectElement_RazorClassLibrary(
+            XElement projectElement,
+            string expectedProjectFilePath)
+        {
+            this.SetupProjectElement_Initial(
+                projectElement,
+                expectedProjectFilePath);
+
+            this.SetRazorSdk(projectElement);
+            this.SetTargetFramework_NET6(projectElement);
+            this.AddBrowserSupportedPlatform(projectElement);
+            this.AddRazorClassLibraryPackageReferences(projectElement);
+
+            // Not setting any project reference depdencies, yet. So keep expected project file path input.
+        }
+
+        public void SetupProjectElement_WebServerForBlazorClient(
 		   XElement projectElement,
 		   string expectedProjectFilePath)
 		{
-			this.SetWebSdk(projectElement);
+            this.SetupProjectElement_Initial(
+                projectElement,
+                expectedProjectFilePath);
+
+            this.SetWebSdk(projectElement);
 			this.SetWebTargetFramework(projectElement);
             this.AddWebBlazorServerPackageReferences(projectElement);
 
 			// Not setting any project reference depdencies, yet. So keep expected project file path input.
 		}
 
+        public void SetupProjectElement_WebStaticRazorComponents(
+           XElement projectElement,
+           string expectedProjectFilePath)
+        {
+            this.SetupProjectElement_Initial(
+                projectElement,
+                expectedProjectFilePath);
+
+            this.SetWebSdk(projectElement);
+            this.SetWebTargetFramework(projectElement);
+
+            // Not setting any project reference depdencies, yet. So keep expected project file path input.
+        }
+
         public void SetupProjectElement_WebBlazorClient(
            XElement projectElement,
            string expectedProjectFilePath)
         {
+            this.SetupProjectElement_Initial(
+                projectElement,
+                expectedProjectFilePath);
+
             this.SetBlazorWebAssemblySdk(projectElement);
             this.SetWebTargetFramework(projectElement);
             this.AddWebBlazorClientPackageReferences(projectElement);
@@ -166,6 +252,20 @@ namespace R5T.F0081
             ProjectXmlOperator.Instance.AddPackageReferences_Idempotent(
                 projectElement,
                 Z0020.Packages.Instance.ForWebBlazorClient.ToStringBasedPackageReferences());
+        }
+
+        public void AddRazorClassLibraryPackageReferences(
+            XElement projectElement)
+        {
+            ProjectXmlOperator.Instance.AddPackageReferences_Idempotent(
+                projectElement,
+                Z0020.Packages.Instance.ForRazorClassLibrary.ToStringBasedPackageReferences());
+        }
+
+        public void AddBrowserSupportedPlatform(
+            XElement projectElement)
+        {
+            ProjectXmlOperator.Instance.AddBrowserSupportedPlatform(projectElement);
         }
 
         public void SetupProjectElement_Web(
@@ -216,6 +316,30 @@ namespace R5T.F0081
             ProjectXmlOperator.Instance.SetTargetFramework(
                 projectElement,
                 TargetFrameworkMonikerStrings.Instance.StandardForConsole);
+        }
+
+        /// <summary>
+        /// Sets the target framework to the .NET 6.0 target framework. (<see cref="F0020.ITargetFrameworkMonikerStrings.NET_6"/>)
+        /// </summary>
+        public void SetTargetFramework_NET6(XElement projectElement)
+        {
+            ProjectXmlOperator.Instance.SetTargetFramework(
+                projectElement,
+                F0020.TargetFrameworkMonikerStrings.Instance.NET_6);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void SetDisabledWarnings(XElement projectElement)
+        {
+            ProjectXmlOperator.Instance.SetDisabledWarnings(projectElement,
+                new[]
+                {
+                    Warnings.Instance.CS1573,
+                    Warnings.Instance.CS1587,
+                    Warnings.Instance.CS1591,
+                });
         }
 
         /// <summary>
@@ -281,13 +405,23 @@ namespace R5T.F0081
         }
 
         /// <summary>
-        /// Sets the SDK to the standard .NET SDK (<see cref="F0020.IProjectSdkStrings.Web"/>).
+        /// Sets the SDK to the Blazor .NET SDK (<see cref="IProjectSdkStrings.BlazorWebAssembly"/>).
         /// </summary>
         public void SetBlazorWebAssemblySdk(XElement projectElement)
         {
             ProjectXmlOperator.Instance.SetSdk(
                 projectElement,
                 Instances.ProjectSdkStrings.BlazorWebAssembly);
+        }
+
+        /// <summary>
+        /// Sets the SDK to Razor .NET SDK (<see cref="IProjectSdkStrings.Razor"/>).
+        /// </summary>
+        public void SetRazorSdk(XElement projectElement)
+        {
+            ProjectXmlOperator.Instance.SetSdk(
+                projectElement,
+                Instances.ProjectSdkStrings.Razor);
         }
     }
 }
