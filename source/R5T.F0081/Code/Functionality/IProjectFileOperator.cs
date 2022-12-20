@@ -11,16 +11,16 @@ namespace R5T.F0081
 	public partial interface IProjectFileOperator : IFunctionalityMarker,
         F0020.IProjectFileOperator
 	{
-        public async Task CreateNewProjectFile(
-            string projectFilePath,
-            Func<XElement, Task> projectElementAction = default)
-        {
-            var projectElement = await ProjectXmlOperations.Instance.CreateNewProjectElement(
-                projectElementAction);
+        //public async Task CreateNewProjectFile(
+        //    string projectFilePath,
+        //    Func<XElement, Task> projectElementAction = default)
+        //{
+        //    var projectElement = await ProjectXmlOperations.Instance.CreateNewProjectElement(
+        //        projectElementAction);
 
-            await this.Save(
-                projectFilePath,
-                projectElement);
-        }
+        //    await this.Save(
+        //        projectFilePath,
+        //        projectElement);
+        //}
     }
 }

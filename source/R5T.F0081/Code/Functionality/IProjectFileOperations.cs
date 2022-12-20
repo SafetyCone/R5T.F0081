@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 using R5T.F0020;
 using R5T.T0132;
 using R5T.Z0020;
+
 
 namespace R5T.F0081
 {
@@ -69,94 +69,113 @@ namespace R5T.F0081
             return isRazorClassLibrary;
         }
 
+        public async Task NewProjectFile_DeployScripts(string projectFilePath)
+        {
+            await ProjectFileOperator.Instance.CreateProjectFile(
+                projectFilePath,
+                ProjectXmlOperations.Instance.SetupProjectElement_DeployScripts);
+        }
+
+        public async Task NewProjectFile_WindowsFormsLibrary(string projectFilePath)
+        {
+            await ProjectFileOperator.Instance.CreateProjectFile(
+                projectFilePath,
+                ProjectXmlOperations.Instance.SetupProjectElement_WindowsFormsLibrary);
+        }
+
+        public async Task NewProjectFile_WindowsFormsApplication(string projectFilePath)
+        {
+            await ProjectFileOperator.Instance.CreateProjectFile(
+                projectFilePath,
+                ProjectXmlOperations.Instance.SetupProjectElement_WindowsFormsApplication);
+        }
+
+        /// <summary>
+        /// Creates the standard Blazor server web project file.
+        /// </summary>
+        public async Task NewProjectFile_WebServerForBlazorClient(string projectFilePath)
+        {
+            await ProjectFileOperator.Instance.CreateProjectFile(
+                projectFilePath,
+                ProjectXmlOperations.Instance.SetupProjectElement_WebServerForBlazorClient);
+        }
+
         /// <summary>
         /// Creates the standard web project file.
         /// </summary>
-        public async Task CreateNewProjectFile_Web(string projectFilePath)
+        public async Task NewProjectFile_Web(string projectFilePath)
         {
-            await ProjectFileOperator.Instance.CreateNewProjectFile(
+            await ProjectFileOperator.Instance.CreateProjectFile(
                 projectFilePath,
-                ProjectXmlOperations.Instance.GetSetupProjectElement_Web(
-                    projectFilePath));
-        }
-
-		/// <summary>
-		/// Creates the standard Blazor server web project file.
-		/// </summary>
-		public async Task CreateNewProjectFile_WebServerForBlazorClient(string projectFilePath)
-		{
-			await ProjectFileOperator.Instance.CreateNewProjectFile(
-				projectFilePath,
-				ProjectXmlOperations.Instance.GetSetupProjectElement_WebServerForBlazorClient(
-					projectFilePath));
-		}
-
-        public async Task CreateNewProjectFile_WebStaticRazorComponents(string projectFilePath)
-        {
-            await ProjectFileOperator.Instance.CreateNewProjectFile(
-                projectFilePath,
-                ProjectXmlOperations.Instance.GetSetupProjectElement_WebStaticRazorComponents(
-                    projectFilePath));
+                ProjectXmlOperations.Instance.SetupProjectElement_Web);
         }
 
         /// <summary>
-		/// Creates the standard Blazor server web project file.
-		/// </summary>
-		public async Task CreateNewProjectFile_WebBlazorClient(string projectFilePath)
+        /// Creates the standard web project file.
+        /// </summary>
+        public async Task NewProjectFile_Net6WebAssemblyServerProject(string projectFilePath)
         {
-            await ProjectFileOperator.Instance.CreateNewProjectFile(
+            await ProjectFileOperator.Instance.CreateProjectFile(
                 projectFilePath,
-                ProjectXmlOperations.Instance.GetSetupProjectElement_WebBlazorClient(
-                    projectFilePath));
+                ProjectXmlOperations.Instance.SetupProjectElement_Net6WebAssemblyServer);
+        }
+
+        public async Task NewProjectFile_WebStaticRazorComponents(string projectFilePath)
+        {
+            await ProjectFileOperator.Instance.CreateProjectFile(
+                projectFilePath,
+                ProjectXmlOperations.Instance.SetupProjectElement_WebStaticRazorComponents);
+        }
+
+        /// <summary>
+        /// Creates the standard Blazor server web project file.
+        /// </summary>
+        public async Task NewProjectFile_WebBlazorClient(string projectFilePath)
+        {
+            await ProjectFileOperator.Instance.CreateProjectFile(
+                projectFilePath,
+                ProjectXmlOperations.Instance.SetupProjectElement_WebBlazorClient);
+        }
+
+        public async Task NewProjectFile_RazorClassLibrary(string projectFilePath)
+        {
+            await ProjectFileOperator.Instance.CreateProjectFile(
+                projectFilePath,
+                ProjectXmlOperations.Instance.SetupProjectElement_RazorClassLibrary);
         }
 
         /// <summary>
         /// Creates the standard library project file.
         /// </summary>
-        public async Task CreateNewProjectFile_Library(string projectFilePath)
+        public async Task NewProjectFile_Console(string projectFilePath)
         {
-            await ProjectFileOperator.Instance.CreateNewProjectFile(
+            await ProjectFileOperator.Instance.CreateProjectFile(
                 projectFilePath,
-                ProjectXmlOperations.Instance.GetSetupProjectElement_Library(
-                    projectFilePath));
+                ProjectXmlOperations.Instance.SetupProjectElement_Console);
         }
 
         /// <summary>
         /// Creates the standard library project file.
         /// </summary>
-        public async Task CreateNewProjectFile_Console(string projectFilePath)
+        public async Task NewProjectFile_Library(string projectFilePath)
         {
-            await ProjectFileOperator.Instance.CreateNewProjectFile(
+            await ProjectFileOperator.Instance.CreateProjectFile(
                 projectFilePath,
-                ProjectXmlOperations.Instance.GetSetupProjectElement_Console(
-                    projectFilePath));
+                ProjectXmlOperations.Instance.SetupProjectElement_Library);
         }
 
-        public async Task CreateNewProjectFile_RazorClassLibrary(string projectFilePath)
+        public async Task NewProjectFile_OnlyProjectElement(string projectFilePath)
         {
-            await ProjectFileOperator.Instance.CreateNewProjectFile(
+            await ProjectFileOperator.Instance.CreateProjectFile(
                 projectFilePath,
-                ProjectXmlOperations.Instance.GetSetupProjectElement_RazorClassLibrary(
-                    projectFilePath));
+                ProjectXmlOperations.Instance.SetupProjectElement_OnlyProjectElement);
         }
 
-        /// <summary>
-		/// Creates a project file with a project element with the SDK attribute with the standard .NET value.
-		/// </summary>
-		public async Task Create_OnlyProjectElementWithSdk(string projectFilePath)
+        public async Task NewProjectFile_OnlyProjectElementWithSdk(string projectFilePath)
         {
-            await ProjectFileOperator.Instance.CreateNewProjectFile(
+            await ProjectFileOperator.Instance.CreateProjectFile(
                 projectFilePath,
-                ProjectXmlOperations.Instance.GetSetupProjectElement_SdkOnly());
-        }
-
-        /// <summary>
-		/// Creates a project file with *only* the project element.
-		/// </summary>
-		public async Task Create_OnlyProjectElement(string projectFilePath)
-        {
-            await ProjectFileOperator.Instance.CreateNewProjectFile(
-                projectFilePath);
+                ProjectXmlOperations.Instance.SetupProjectElement_OnlyProjectElementWithSdk);
         }
 
         /// <summary>

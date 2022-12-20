@@ -15,14 +15,14 @@ namespace R5T.F0081
         /// </summary>
         public XElement Create_OnlyProjectElement()
         {
-            var projectElement = F0020.ProjectXmlOperator.Instance.CreateNew();
+            var projectElement = F0020.ProjectXmlOperations.Instance.NewProjectElement();
 
             return projectElement;
         }
 
         public XElement New()
         {
-            var projectElement = F0020.ProjectXmlOperator.Instance.CreateNew();
+            var projectElement = F0020.ProjectXmlOperations.Instance.NewProjectElement();
 
             return projectElement;
         }

@@ -23,5 +23,10 @@ namespace R5T.F0081
         /// The standard target framwork for web projects is: <see cref="F0020.ITargetFrameworkMonikerStrings.NET_6"/>.
         /// </summary>
         public string StandardForWeb => this.NET_6;
+
+        /// <summary>
+        /// The standard target framwork for windows forms projects is: <see cref="F0020.ITargetFrameworkMonikerStrings.NET_6_Windows"/>.
+        /// </summary>
+        public string StandardForWindowsForms => this.NET_6_Windows;
     }
 }
