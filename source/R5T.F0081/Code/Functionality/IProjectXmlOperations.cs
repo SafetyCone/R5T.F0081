@@ -225,12 +225,33 @@ namespace R5T.F0081
             return output;
         }
 
+        public IEnumerable<Action<XElement>> SetupProjectElement_WebStaticRazorComponents()
+        {
+            var output = Instances.EnumerableOperator.From<Action<XElement>>(
+                this.SetWebSdk,
+                this.SetWebTargetFramework);
+
+            return output;
+        }
+
         public IEnumerable<Action<XElement>> SetupProjectElement_WebStaticRazorComponents(string expectedProjectFilePath)
         {
             var output = this.WithStandardModifiers(
                 expectedProjectFilePath,
-                this.SetWebSdk,
-                this.SetWebTargetFramework);
+                this.SetupProjectElement_WebStaticRazorComponents());
+
+            return output;
+        }
+
+        public IEnumerable<Action<XElement>> SetupProjectElement_Blog(string expectedProjectFilePath)
+        {
+            var output = this.WithStandardModifiers(
+                expectedProjectFilePath,
+                this.SetupProjectElement_WebStaticRazorComponents()
+                    .Append(
+                        this.SetProjectReferences(
+                            expectedProjectFilePath,
+                            ProjectFilePaths.Instance.BlogDependencies)));
 
             return output;
         }

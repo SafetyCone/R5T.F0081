@@ -127,6 +127,13 @@ namespace R5T.F0081
                 ProjectXmlOperations.Instance.SetupProjectElement_WebStaticRazorComponents);
         }
 
+        public async Task NewProjectFile_Blog(string projectFilePath)
+        {
+            await ProjectFileOperator.Instance.CreateProjectFile(
+                projectFilePath,
+                ProjectXmlOperations.Instance.SetupProjectElement_Blog);
+        }
+
         /// <summary>
         /// Creates the standard Blazor server web project file.
         /// </summary>
