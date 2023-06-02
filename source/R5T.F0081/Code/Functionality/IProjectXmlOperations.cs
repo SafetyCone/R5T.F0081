@@ -179,7 +179,9 @@ namespace R5T.F0081
                 this.SetWebSdk,
                 this.SetWebTargetFramework,
                 this.AddPackageReferences(
+#pragma warning disable CS0618 // Type or member is obsolete
                     Z0020.Packages.Instance.Microsoft_AspNetCore_Components_WebAssembly_Server));
+#pragma warning restore CS0618 // Type or member is obsolete
 
             return output;
         }
@@ -399,6 +401,7 @@ namespace R5T.F0081
         /// </summary>
         public void SetDisabledWarnings(XElement projectElement)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             ProjectXmlOperator.Instance.SetDisabledWarnings(projectElement,
                 new[]
                 {
@@ -406,6 +409,7 @@ namespace R5T.F0081
                     Warnings.Instance.CS1587,
                     Warnings.Instance.CS1591,
                 });
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <summary>
