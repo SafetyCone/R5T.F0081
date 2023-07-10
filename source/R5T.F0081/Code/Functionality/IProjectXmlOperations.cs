@@ -305,25 +305,31 @@ namespace R5T.F0081
         public void AddWebBlazorServerPackageReferences(
             XElement projectElement)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             ProjectXmlOperator.Instance.AddPackageReferences_Idempotent(
                 projectElement,
                 Z0020.Packages.Instance.ForWebBlazorServer.ToStringBasedPackageReferences());
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         public void AddWebBlazorClientPackageReferences(
             XElement projectElement)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             ProjectXmlOperator.Instance.AddPackageReferences_Idempotent(
                 projectElement,
                 Z0020.Packages.Instance.ForWebBlazorClient.ToStringBasedPackageReferences());
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         public void AddRazorClassLibraryPackageReferences(
             XElement projectElement)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             ProjectXmlOperator.Instance.AddPackageReferences_Idempotent(
                 projectElement,
                 Z0020.Packages.Instance.ForRazorClassLibrary.ToStringBasedPackageReferences());
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         public void AddBrowserSupportedPlatform(
