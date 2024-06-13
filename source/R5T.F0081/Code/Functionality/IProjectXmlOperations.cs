@@ -2,15 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Linq;
 
-using R5T.F0000;
 using R5T.F0020;
 using R5T.T0132;
 using R5T.T0152;
-using R5T.T0152.Code.Extensions;
+using R5T.T0152.Extensions;
 using R5T.Z0018;
 
 
@@ -137,7 +134,7 @@ namespace R5T.F0081
         {
             var output = this.SetupProjectElement_WindowsForms(expectedProjectFilePath,
                 // No changes needed.
-                Actions.Instance.None)
+                Instances.Actions.DoNothing_Synchronous)
                 ;
 
             return output;
@@ -264,10 +261,10 @@ namespace R5T.F0081
 
             var propertyGroupElement = ProjectXmlOperator.Instance.AcquireMainPropertyGroup(projectElement);
 
-            var properties = XElementOperator.Instance.GetChildren(propertyGroupElement);
+            var properties = Instances.XElementOperator.Get_Children(propertyGroupElement);
 
             var orderedProperties = properties.OrderByNames(
-                XElementOperator.Instance.GetName,
+                Instances.XElementOperator.Get_Name,
                 orderedPropertyElementNames);
 
             propertyGroupElement.ReplaceNodes(orderedProperties);
