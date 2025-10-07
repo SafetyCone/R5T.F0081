@@ -263,7 +263,7 @@ namespace R5T.F0081
 
             var properties = Instances.XElementOperator.Get_Children(propertyGroupElement);
 
-            var orderedProperties = properties.OrderByNames(
+            var orderedProperties = properties.Order_ByNames(
                 Instances.XElementOperator.Get_Name,
                 orderedPropertyElementNames);
 
